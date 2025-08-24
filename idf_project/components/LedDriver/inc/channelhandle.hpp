@@ -20,6 +20,13 @@ class ChannelHandle {
     esp_err_t write(const color_t* colors);
 
     /**
+     * @brief Configure PCA9955B when need_reconfig flag is true.
+     * @return ESP_OK on success; otherwise an esp_err_t from the backend.
+     * @note Called once only, the function do all reconfigure.
+    */
+    esp_err_t reconfigure();
+
+    /**
      * @brief Detach and release resources from the configured backend.
      * @return ESP_OK on success; otherwise an esp_err_t from the backend.
      */
