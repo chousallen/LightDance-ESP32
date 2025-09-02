@@ -56,6 +56,14 @@ esp_err_t ChannelHandle::write(const color_t* colors) {
     return ret;
 }
 
+esp_err_t ChannelHandle::reconfigure(){
+    esp_err_t ret = pca9955.reconfigure_marked();
+    if(ret != ESP_OK) {
+        ESP_LOGE(TAG, "pca9955 reconfig failed: %s", esp_err_to_name(ret));
+    }
+    return ret;
+}
+
 esp_err_t ChannelHandle::detach() {
     if(type != LED_TYPE_STRIP && type != LED_TYPE_OF) {
         // detach on unknown state; treat as already detached for idempotence
@@ -98,4 +106,8 @@ esp_err_t ChannelHandle::wait_done() {
         ESP_LOGE(TAG, "pca9955 wait_done failed: %s", esp_err_to_name(ret));
     }
     return ret;
+}
+
+bool ChannelHandle::get_need_reconfig() {
+    return pca9955.get_need_reconfig();
 }

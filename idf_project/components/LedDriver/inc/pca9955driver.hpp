@@ -48,6 +48,24 @@ class pca9955Driver {
     esp_err_t write(const color_t* colors);
 
     /**
+     * @brief Reconfigure all PCA9955 devices marked as needing reinitialization.
+     *
+     * This function iterates through the internal reconfiguration list and attempts
+     * to recover each PCA9955 device in-place:
+     *  - Removes the old I2C device handle (best effort, does not abort on failure).
+     *  - Re-adds the device on the same address without altering slot usage counts.
+     *  - Performs chip-wide initialization (e.g., reset IREFALL).
+     *  - Updates the shared device handle and clears the reconfiguration flag if successful.
+     *
+     * Devices that fail reconfiguration remain marked for retry on the next call.
+     *
+     * @return
+     *  - ESP_OK if all marked devices were successfully reconfigured.
+     *  - First error encountered if one or more devices failed to reconfigure.
+     */
+    esp_err_t reconfigure_marked();
+
+    /**
      * @brief Detach the PCA9955 device from the I2C bus.
      *
      * Decrements the usage count for the current device index.
@@ -86,6 +104,13 @@ class pca9955Driver {
      *  Index (0..MAX_PCA9955_NUM-1) on success; -1 on failure.
      */
     int get_or_register_device(uint8_t addr);
+
+    /** 
+     * @brief Get the  flag "need_reconfig" declared in pca9955driver.cpp.
+     * 
+     * @return whether reconfiguration is required.
+    */
+    bool get_need_reconfig();
 
   private:
     uint8_t addr;                       /**< I2C address of the device. */

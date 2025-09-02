@@ -13,13 +13,15 @@ extern "C" {
 #define I2C_PORT I2C_NUM_0
 #define I2C_MASTER_SCL_IO 22
 #define I2C_MASTER_SDA_IO 21
+#define I2C_TRANSMIT_TIMEOUT -1 //wait timeout, in ms. -1 means wait forever
+#define I2C_SCL_FREQ 100000 //adjust to 1000000 for Fm+ mode
 
 // ==== Limits ====
 // Total logical channels your app supports (across all backends).
-#define MAX_CHANNEL_NUM 28
+#define MAX_CHANNEL_NUM 48
 
-// Number of PCA9955B devices expected on the bus (each has 16 channels).
-#define MAX_PCA9955_NUM 4
+// Number of PCA9955B devices expected on the bus (each PCA9955B device can control 5 LEDs/channels).
+#define MAX_PCA9955_NUM 8
 
 // ---- Sanity checks ----
 #if (MAX_PCA9955_NUM) < 0
@@ -39,8 +41,8 @@ typedef struct {
 } color_t;
 
 // ==== LED types ====
-//   LED_TYPE_OF       = a discrete GPIO LED or similar on/off/dimmed device
-//   LED_TYPE_STRIP    = WS2812/NeoPixel-like strip on a single GPIO
+//   LED_TYPE_OF       = PCA9955B device / a discrete GPIO LED or similar on/off/dimmed device
+//   LED_TYPE_STRIP    = WS2812 / NeoPixel-like strip on a single GPIO
 typedef enum {
     LED_TYPE_OF = 0,
     LED_TYPE_STRIP = 1,
@@ -54,7 +56,7 @@ typedef enum {
 //
 // For LED_TYPE_OF (single/PCA channel):
 //   - led_count     = 1
-//   - gpio_or_addr  = if GPIO-driven, this is the GPIO; if PCA-driven, this is the 7-bit I2C addr
+//   - gpio_or_addr  = if PCA-driven (designed), this is the 7-bit I2C addr; if GPIO-driven, this is the GPIO
 //   - pca_channel   = 0..4 (PCA9955B channel index), or ignored for GPIO LEDs
 typedef struct {
     LED_TYPE_t type;

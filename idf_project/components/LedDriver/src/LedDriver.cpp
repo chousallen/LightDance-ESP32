@@ -94,6 +94,16 @@ esp_err_t LedDriver::write(const color_t** frame) {
             agg = r;  // keep last error
         }
     }
+
+    //do reconfigure
+    if(channel_handle[0].get_need_reconfig()){
+        esp_err_t r = channel_handle[0].reconfigure();
+        if(r != ESP_OK){
+            ESP_LOGE(TAG, "reconfigure failed: %s", esp_err_to_name(r));
+            agg = r;
+        }
+    }
+    
     if(agg == ESP_OK)
         agg = wait_all_done();
     return agg;
