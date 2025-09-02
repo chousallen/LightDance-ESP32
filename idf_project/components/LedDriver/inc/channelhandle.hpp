@@ -38,6 +38,12 @@ class ChannelHandle {
      */
     esp_err_t wait_done();
 
+    /**
+     * @brief Check if reconfiguration is required.
+     * @return If reconfiguration is required.
+    */
+    bool get_need_reconfig();
+
   private:
     LED_TYPE_t type;       /**< Selected backend type. */
     pca9955Driver pca9955; /**< PCA9955 backend driver. */

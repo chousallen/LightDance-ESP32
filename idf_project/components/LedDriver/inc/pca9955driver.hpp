@@ -7,8 +7,6 @@ extern "C" {
 #define IREFALL_addr 0x45
 #define OF_MAXIMUM_BRIGHTNESS 255
 
-static bool need_reconfig = false;
-
 /**
  * @brief PCA9955B LED driver interface class.
  *
@@ -106,6 +104,13 @@ class pca9955Driver {
      *  Index (0..MAX_PCA9955_NUM-1) on success; -1 on failure.
      */
     int get_or_register_device(uint8_t addr);
+
+    /** 
+     * @brief Get the  flag "need_reconfig" declared in pca9955driver.cpp.
+     * 
+     * @return whether reconfiguration is required.
+    */
+    bool get_need_reconfig();
 
   private:
     uint8_t addr;                       /**< I2C address of the device. */

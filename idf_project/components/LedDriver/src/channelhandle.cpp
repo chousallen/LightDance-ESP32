@@ -107,3 +107,7 @@ esp_err_t ChannelHandle::wait_done() {
     }
     return ret;
 }
+
+bool ChannelHandle::get_need_reconfig() {
+    return pca9955.get_need_reconfig();
+}

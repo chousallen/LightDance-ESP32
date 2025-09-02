@@ -6,6 +6,7 @@ static uint8_t use_count[MAX_PCA9955_NUM] = {0};
 static bool reconfig_list[MAX_PCA9955_NUM] = {0};
 static i2c_master_dev_handle_t dev_handles[MAX_PCA9955_NUM];
 static int registered = 0;
+static bool need_reconfig = false;
 
 // 1xxxxxxx: auto increment
 static const uint8_t PWM_addr[5] = {0x88, 0x8B, 0x8E, 0x91, 0x94};
@@ -188,4 +189,8 @@ int pca9955Driver::get_or_register_device(uint8_t addr) {
     dev_handles[index] = dev;
     registered++;
     return index;
+}
+
+bool pca9955Driver::get_need_reconfig(){
+    return need_reconfig;
 }
