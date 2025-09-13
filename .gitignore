@@ -1,2 +1,5 @@
 **/.vscode/
 **/build/
+idf_project/.cache/
+idf_project/.vscode/
+idf_project/.build/

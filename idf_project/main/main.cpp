@@ -1,11 +1,21 @@
-#include <stdio.h>
+#include"app_config.h"
+#include "pattern_table.h"
+#include "player_content.h"
+#include "sdcard.h"
+#include "player.h"
 
 #include <freertos/FreeRTOS.h>
 
 #include "LedDriver.hpp"
 #include "led_def.h"
 
-extern "C" void app_main();
+
+
+#define TAG "PLAYER_MAIN"
+
+static player P;
+
+extern "C" void app_main(void);
 
 #define N_STRIP_CH 4
 #define N_OF_CH 10
@@ -126,7 +136,20 @@ void app_main(void)
         ESP_LOGI("APP", "Set to BLUE");
 
         vTaskDelay(1000 / portTICK_PERIOD_MS);
-
-        
     }
+        
+  
+    
+    // player_init(&P);
+    
+    // player_start(&P);
+    // vTaskDelay(500);
+    // player_pause(&P);
+    // player_pause(&P);
+    // vTaskDelay(500);
+    // player_resume(&P);
+    // vTaskDelay(1000);
+    // player_stop(&P);
+    // vTaskDelay(300);
+    // player_exit(&P);
 }
